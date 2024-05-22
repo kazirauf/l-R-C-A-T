@@ -1,5 +1,5 @@
 import cors from "cors";
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import { ProductRoute } from "./app/modules/products/product.route";
 import { OrderRoute } from "./app/modules/orders/order.route";
 
@@ -18,14 +18,6 @@ app.use("/api/products", ProductRoute);
 // order routes 
 app.use("/api/orders", OrderRoute);
 
-app.all("*", (req: Request, res: Response) => {
-  res.status(404).json({
-    success: false,
-    message: "route not found",
-  });
-});
-
-
 
 
 const getController = (req: Request, res: Response) => {
@@ -33,5 +25,16 @@ const getController = (req: Request, res: Response) => {
 };
 
 app.get("/", getController);
+
+
+// all route 
+
+app.use("*", (req: Request, res: Response, next: NextFunction) => {
+  res.status(404).send({
+    success: false,
+    message: "Route not found",
+  });
+  next();
+});
 
 export default app;
