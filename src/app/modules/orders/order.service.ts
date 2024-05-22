@@ -25,7 +25,21 @@ const createOrderIntoDB = async (order: ProductPurchase) => {
    }
  
 };
+const getOrderByEmailFromDB = async (email?:string) => {
+
+   const query = email ? { email } : {};
+  const result = await OrderModel.find(query);
+  if(result.length > 0){
+  return result;
+  }
+    throw new Error("Order not found!");
+  
+  
+};
+
+
 
 export const OrderService = {
   createOrderIntoDB,
+  getOrderByEmailFromDB,
 };

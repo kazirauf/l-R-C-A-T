@@ -21,22 +21,22 @@ export const OrderProduct = async (req: Request, res: Response) => {
     });
   }
 };
-export const Ordeoduct = async (req: Request, res: Response) => {
-  try {
-    const product = req.body;
-    const value = OrderValidation.parse(product);
-    const result = await OrderService.createOrderIntoDB(value);
 
-    res.status(200).json({
+
+export const getOrderByEmaill = async (req: Request, res: Response) => {
+  try {
+    const {email} = req.query;
+    const result = await OrderService.getOrderByEmailFromDB(email as string);
+
+    res.status(200).send({
       success: true,
-      message: "Order created successfully!",
+      message: "Order fetched successfully",
       data: result,
     });
-  } catch (err) {
-    res.status(400).json({
-      success: false,
-      message: (err as Error).message,
-    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: (error as Error).message,  });
   }
 };
 
