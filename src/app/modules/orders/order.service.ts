@@ -27,6 +27,8 @@ const createOrderIntoDB = async (order: ProductPurchase) => {
    }
  
 };
+
+// get order data via email 
 const getOrderByEmailFromDB = async (email?:string) => {
 
    const query = email ? { email } : {};
