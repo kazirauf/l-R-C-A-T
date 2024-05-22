@@ -30,13 +30,13 @@ export const getOrderByEmaill = async (req: Request, res: Response) => {
 
     res.status(200).send({
       success: true,
-      message: "Order fetched successfully",
+      message: "",
       data: result,
     });
   } catch (error) {
     res
       .status(500)
-      .json({ success: false, message: (error as Error).message,  });
+      .json({ success: false, message: (error as Error).message,});
   }
 };
 
