@@ -2,6 +2,8 @@ import ProductModel from "../products/product.model";
 import { ProductPurchase } from "./order.interface";
 import OrderModel from "./order.model";
 
+
+// creating order in db when certain condition meets 
 const createOrderIntoDB = async (order: ProductPurchase) => {
   const isExist = await ProductModel.findById(order.productId);
    if (!isExist) {
