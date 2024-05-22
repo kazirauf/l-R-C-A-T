@@ -11,7 +11,11 @@ const createOrderIntoDB = async (order: ProductPurchase) => {
    } else {
      const updatedQuantity = isExist?.inventory?.quantity - order?.quantity;
 
-     if (isExist.inventory.inStock && updatedQuantity >= 0) {
+     if (
+       isExist.inventory.inStock &&
+       updatedQuantity >= 0 &&
+       updatedQuantity <= isExist?.inventory?.quantity
+     ) {
        const result = await OrderModel.create(order);
        await ProductModel.updateOne(
          { _id: order.productId },
