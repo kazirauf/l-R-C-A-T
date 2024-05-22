@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import { ProductService } from "./product.service";
+import { ProductValidation } from "./product.validation";
 
 
 // create product -------------------------------
 
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async(req: Request, res: Response) => {
    try{
      const product = req.body;
-    const result = await ProductService.createProductIntoDB(product);
+     const value = ProductValidation.parse(product);
+    const result = await ProductService.createProductIntoDB(value);
 
     res.status(200).json({
       success: true,
@@ -26,20 +28,19 @@ export const createProduct = async (req: Request, res: Response) => {
 
 // get all  product -------------------------------
 export const getProduct = async (req: Request, res: Response) => {
-   try{
-    const result = await ProductService.getProductFromDB();
+   try {
+     const searchTerm = req.query?.searchTerm;
 
-    res.status(200).json({
-      success: true,
-      message: "Products fetched successfully!",
-      data: result,
-    });
-   }catch(err){
-    res.status(400).json({
-      success: false,
-      message: "Failed to fetched product!",
-      error: err,
-    });
+     const result = await ProductService.getProductFromDB(searchTerm as string);
+     res.status(200).send({
+       success: true,
+       message: "Product Searched successfully",
+       data: result,
+     });
+   } catch (error) {
+     res
+       .status(500)
+       .json({ success: false, message: "Product Searched failed" });
    }
 }
 
@@ -89,20 +90,51 @@ export const updateProductByID = async (req: Request, res: Response) => {
         message: "No data is Provided!",
       });
     }
+    const value = ProductValidation.parse(product);
     const result = await ProductService.updateProductByIDFromDB(
       id as string,
-      product
+      value
     );
 
     res.status(200).json({
       success: true,
       message: "Product updated successfully!",
-      data: result,
+      data: product,
     });
    }catch(err){
     res.status(400).json({
       success: false,
       message: "Failed to update product!",
+      error: err,
+    });
+   }
+}
+
+
+
+// delete product by ID -------------------------------
+
+
+export const deleteProductByID = async (req: Request, res: Response) => {
+   try{
+    const id = req.params.productId;
+    if(!id){
+      res.status(400).json({
+        success: false,
+        message: "NO ID is Provided!",
+      });
+    }
+    const result = await ProductService.deleteProductByIDFromDB(id as string);
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully!",
+      data: null,
+    });
+   }catch(err){
+    res.status(400).json({
+      success: false,
+      message: "Failed to delete product!",
       error: err,
     });
    }

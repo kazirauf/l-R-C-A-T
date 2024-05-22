@@ -10,8 +10,17 @@ const createProductIntoDB = async (product: ProductInterface) => {
 };
 
 // get all product  get  method  -----------
-const getProductFromDB = async () => {
-  const result = await ProductModel.find();
+const getProductFromDB = async (searchTerm:string) => {
+  const filter: any = {};
+  if (searchTerm) {
+    filter.$or = [
+      { name: { $regex: searchTerm, $options: "i" } },
+      { description: { $regex: searchTerm, $options: "i" } },
+      { category: { $regex: searchTerm, $options: "i" } },
+      { tags: { $regex: searchTerm, $options: "i" } },
+    ];
+  }
+  const result = await ProductModel.find(filter);
   return result;
 };
 
@@ -26,11 +35,19 @@ const updateProductByIDFromDB = async (id:string, product:ProductInterface) => {
   const result = await ProductModel.updateOne({_id : id}, product);
   return result;
 };
+// delete  product by ID  get  method  -----------
+const deleteProductByIDFromDB = async (id:string) => {
+  const result = await ProductModel.deleteOne({_id : id});
+  return result;
+};
+// delete  product by ID  get  method  -----------
+
 
 export const ProductService = {
   createProductIntoDB,
   getProductFromDB,
   getProductByIDFromDB,
   updateProductByIDFromDB,
+  deleteProductByIDFromDB,
 };
 
