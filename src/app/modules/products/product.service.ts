@@ -11,6 +11,7 @@ const createProductIntoDB = async (product: ProductInterface) => {
 
 // get all product  get  method  -----------
 const getProductFromDB = async (searchTerm:string) => {
+  //eslint-disable-next-line
   const filter: any = {};
   if (searchTerm) {
     filter.$or = [

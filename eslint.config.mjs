@@ -11,7 +11,7 @@ export default [
             "no-console": "warn",
         },
         ignores: ["**/node_modules/ .dist/"],
-        languageOptions: { globals: globals.browser },
+        languageOptions: { globals: globals.node },
     },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,

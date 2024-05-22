@@ -91,7 +91,7 @@ export const updateProductByID = async (req: Request, res: Response) => {
       });
     }
     const value = ProductValidation.parse(product);
-    const result = await ProductService.updateProductByIDFromDB(
+    await ProductService.updateProductByIDFromDB(
       id as string,
       value
     );
@@ -124,7 +124,7 @@ export const deleteProductByID = async (req: Request, res: Response) => {
         message: "NO ID is Provided!",
       });
     }
-    const result = await ProductService.deleteProductByIDFromDB(id as string);
+    await ProductService.deleteProductByIDFromDB(id as string);
 
     res.status(200).json({
       success: true,
