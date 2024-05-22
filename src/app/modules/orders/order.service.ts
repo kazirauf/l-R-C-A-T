@@ -45,7 +45,6 @@ const getOrderByEmailFromDB = async (email?:string) => {
   
 };
 
-
 export const OrderService = {
   createOrderIntoDB,
   getOrderByEmailFromDB,
